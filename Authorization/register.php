@@ -1,10 +1,13 @@
 <?php
+session_start();
+require_once '../database.php';
+
 $error   = '';
 $success = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-  $name    = trim($_POST['name']           ?? '');
-  $email   = trim($_POST['email']          ?? '');
+  $name     = trim($_POST['name']          ?? '');
+  $email    = trim($_POST['email']         ?? '');
   $password = $_POST['password']           ?? '';
   $confirm  = $_POST['confirm_password']   ?? '';
 
@@ -17,8 +20,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   } elseif ($password !== $confirm) {
     $error = 'Passwords do not match.';
   } else {
-    // TODO: save user to database here
-    $success = 'Account created! You can now sign in.';
+    // Check if email already registered
+    $chk = mysqli_prepare($connect, "SELECT id FROM users WHERE email = ? LIMIT 1");
+    mysqli_stmt_bind_param($chk, 's', $email);
+    mysqli_stmt_execute($chk);
+    mysqli_stmt_store_result($chk);
+
+    if (mysqli_stmt_num_rows($chk) > 0) {
+      $error = 'An account with that email already exists.';
+    } else {
+      $hash = password_hash($password, PASSWORD_DEFAULT);
+      $now  = date('Y-m-d H:i:s');
+      $stmt = mysqli_prepare($connect,
+        "INSERT INTO users (name, email, password, currency, created_at, updated_at)
+         VALUES (?, ?, ?, 'MYR', ?, ?)"
+      );
+      mysqli_stmt_bind_param($stmt, 'sssss', $name, $email, $hash, $now, $now);
+
+      if (mysqli_stmt_execute($stmt)) {
+        $success = 'Account created! You can now sign in.';
+      } else {
+        $error = 'Registration failed. Please try again.';
+      }
+      mysqli_stmt_close($stmt);
+    }
+    mysqli_stmt_close($chk);
   }
 }
 ?>

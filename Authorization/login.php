@@ -1,25 +1,36 @@
 <?php
+session_start();
+require_once '../database.php';
+
 $error   = '';
 $success = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $email    = trim($_POST['email']    ?? '');
-  $password = $_POST['password'] ?? '';
-
-  // TODO: replace with real DB lookup
-  $demo_email    = 'qiao.hui@email.com';
-  $demo_password = 'pass123';
+  $password = $_POST['password']      ?? '';
 
   if ($email === '' || $password === '') {
     $error = 'Please fill in all fields.';
   } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
     $error = 'Please enter a valid email address.';
-  } elseif ($email === $demo_email && $password === $demo_password) {
-    // Successful login — redirect to dashboard
-    header('Location: dashboard.php');
-    exit;
   } else {
-    $error = 'Incorrect email or password.';
+    // Look up user by email
+    $stmt = mysqli_prepare($connect, "SELECT id, name, password FROM users WHERE email = ? LIMIT 1");
+    mysqli_stmt_bind_param($stmt, 's', $email);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+    $user   = mysqli_fetch_assoc($result);
+    mysqli_stmt_close($stmt);
+
+    if ($user && password_verify($password, $user['password'])) {
+      // Store user in session and go to dashboard
+      $_SESSION['user_id']   = $user['id'];
+      $_SESSION['user_name'] = $user['name'];
+      header('Location: ../Content/dashboard.php');
+      exit;
+    } else {
+      $error = 'Incorrect email or password.';
+    }
   }
 }
 ?>
