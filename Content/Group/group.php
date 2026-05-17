@@ -63,14 +63,15 @@ function time_ago($datetime) {
   return floor($diff / 86400) . 'd ago';
 }
 
-function group_icon_svg($icon) {
+function group_icon_name($icon) {
   return match($icon) {
-    'house'          => '<path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>',
-    'flight_takeoff' => '<path d="M22 2L11 13"/><path d="M22 2L15 22l-4-9-9-4 20-7z"/>',
-    'coffee'         => '<path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/>',
-    'receipt'        => '<polyline points="6 2 3 6 3 20 21 20 21 6 18 2 6 2"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/>',
-    'landscape'      => '<path d="M3 7l5-5 5 5 5-5 3 5"/><path d="M3 17h18"/>',
-    default          => '<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>',
+    'house'          => 'home',
+    'flight_takeoff' => 'plane',
+    'coffee'         => 'coffee',
+    'receipt'        => 'receipt',
+    'landscape'      => 'mountain',
+    'couple'         => 'heart',
+    default          => 'users',
   };
 }
 
@@ -92,6 +93,7 @@ function group_icon_style($icon) {
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>WhoOwes — Groups</title>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <link rel="stylesheet" href="group.css">
   <link rel="stylesheet" href="../Sidebar/sidebar.css">
 </head>
@@ -129,13 +131,13 @@ function group_icon_style($icon) {
         $settled = (int)$grp['settled_splits'];
         $pct     = $total > 0 ? round($settled / $total * 100) : 100;
         $style   = group_icon_style($grp['icon']);
-        $svg     = group_icon_svg($grp['icon']);
+        $iname   = group_icon_name($grp['icon']);
         $when    = time_ago($grp['last_activity']);
       ?>
-      <div class="group-card">
+      <a class="group-card" href="group_details.php?id=<?= $grp['id'] ?>" style="text-decoration:none;color:inherit;display:block;">
         <div class="group-card-row">
           <div class="group-icon" style="background:<?= $style['bg'] ?>">
-            <svg viewBox="0 0 24 24" style="stroke:<?= $style['stroke'] ?>"><?= $svg ?></svg>
+            <i data-lucide="<?= $iname ?>" style="stroke:<?= $style['stroke'] ?>;fill:none;width:22px;height:22px;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round"></i>
           </div>
           <div class="group-meta">
             <strong><?= htmlspecialchars($grp['name']) ?></strong>
@@ -156,17 +158,12 @@ function group_icon_style($icon) {
           </div>
           <span class="progress-label"><?= $pct ?>% settled</span>
         </div>
-      </div>
+      </a>
       <?php endforeach; ?>
 
       <!-- Create New Group -->
       <div class="group-card new-card">
-        <svg viewBox="0 0 24 24">
-          <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
-          <circle cx="9" cy="7" r="4"/>
-          <line x1="19" y1="8" x2="19" y2="14"/>
-          <line x1="16" y1="11" x2="22" y2="11"/>
-        </svg>
+        <i data-lucide="user-plus" style="width:28px;height:28px;stroke:#1e3a7a;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round"></i>
         <span>Create New Group</span>
       </div>
 

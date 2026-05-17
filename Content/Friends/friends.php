@@ -65,6 +65,7 @@ function avatar_color($id) {
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>WhoOwes — Friends</title>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <link rel="stylesheet" href="friends.css">
   <link rel="stylesheet" href="../Sidebar/sidebar.css">
 </head>
@@ -80,7 +81,7 @@ function avatar_color($id) {
 
     <!-- Search -->
     <div class="search-wrap">
-      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <i data-lucide="search"></i>
       <input class="search-input" type="text" placeholder="Search friends..." id="searchInput">
     </div>
 
@@ -108,7 +109,7 @@ function avatar_color($id) {
     <div class="friends-header">
       <h3 class="friends-title">All Friends</h3>
       <button class="btn-add-friend">
-        <svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
+        <i data-lucide="user-plus"></i>
         Add Friend
       </button>
     </div>

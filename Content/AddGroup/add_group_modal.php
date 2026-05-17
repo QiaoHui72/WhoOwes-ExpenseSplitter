@@ -284,9 +284,7 @@
       <div>
         <label class="ag-lbl">Add Members</label>
         <div class="ag-srch-wrap" id="agSrchWrap">
-          <svg class="ag-srch-ico" viewBox="0 0 24 24">
-            <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
-          </svg>
+          <i data-lucide="search" class="ag-srch-ico"></i>
           <input class="ag-srch-inp" id="agMemberInput"
                  type="text" placeholder="Search by name or email"
                  autocomplete="off">
@@ -314,12 +312,16 @@
 
 <script>
 (function () {
-  var agMembers = [];
-  var agTimer   = null;
+  var agMembers  = [];
+  var agAllUsers = [];
 
   function agOpen() {
     document.getElementById('agOverlay').style.display = 'flex';
     setTimeout(function () { document.getElementById('agName').focus(); }, 80);
+    fetch('../AddGroup/search_users.php')
+      .then(function (r) { return r.json(); })
+      .then(function (users) { agAllUsers = users; })
+      .catch(function () {});
   }
   window.agOpen = agOpen;
 
@@ -334,9 +336,11 @@
     if (e.target === this) agClose();
   });
 
-  // Triggers: dashboard .new-group card and group.php .new-card
-  document.querySelector('.new-group')?.addEventListener('click', agOpen);
-  document.querySelector('.new-card')?.addEventListener('click', agOpen);
+  // Triggers: wait for full DOM so .new-group / .new-card (in <main>) exist
+  document.addEventListener('DOMContentLoaded', function () {
+    document.querySelector('.new-group')?.addEventListener('click', agOpen);
+    document.querySelector('.new-card')?.addEventListener('click', agOpen);
+  });
 
   // ── Reset ───────────────────────────────────────────────────────
   function agReset() {
@@ -364,19 +368,23 @@
   });
 
   // ── Member search ───────────────────────────────────────────────
+  function agFilteredUsers() {
+    var ids = agMembers.map(function (m) { return m.id; });
+    var q   = document.getElementById('agMemberInput').value.trim().toLowerCase();
+    return agAllUsers.filter(function (u) {
+      if (ids.indexOf(u.id) !== -1) return false;
+      if (!q) return true;
+      return u.name.toLowerCase().indexOf(q) !== -1 ||
+             (u.email || '').toLowerCase().indexOf(q) !== -1;
+    });
+  }
+
+  document.getElementById('agMemberInput').addEventListener('focus', function () {
+    agShowDd(agFilteredUsers());
+  });
+
   document.getElementById('agMemberInput').addEventListener('input', function () {
-    clearTimeout(agTimer);
-    var q = this.value.trim();
-    if (q.length < 2) { agHideDd(); return; }
-    agTimer = setTimeout(function () {
-      fetch('../AddGroup/search_users.php?q=' + encodeURIComponent(q))
-        .then(function (r) { return r.json(); })
-        .then(function (users) {
-          var ids = agMembers.map(function (m) { return m.id; });
-          agShowDd(users.filter(function (u) { return ids.indexOf(u.id) === -1; }));
-        })
-        .catch(agHideDd);
-    }, 280);
+    agShowDd(agFilteredUsers());
   });
 
   document.getElementById('agMemberInput').addEventListener('keydown', function (e) {
@@ -419,8 +427,8 @@
     if (agMembers.find(function (m) { return m.id === id; })) return;
     agMembers.push({ id: id, name: name });
     document.getElementById('agMemberInput').value = '';
-    agHideDd();
     agRenderChips();
+    agShowDd(agFilteredUsers());
   }
 
   window.agRemoveMember = function (id) {

@@ -43,6 +43,7 @@ $friends_count = (int)$r['cnt'];
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>WhoOwes — Profile</title>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <link rel="stylesheet" href="user_profile.css">
   <link rel="stylesheet" href="../Sidebar/sidebar.css">
 </head>
@@ -95,30 +96,24 @@ $friends_count = (int)$r['cnt'];
       <div class="settings-label">ACCOUNT</div>
       <a class="settings-row" href="#">
         <div class="row-left">
-          <div class="row-icon">
-            <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-          </div>
+          <div class="row-icon"><i data-lucide="user"></i></div>
           <span>Edit Profile</span>
         </div>
-        <svg class="chevron" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+        <i data-lucide="chevron-right" class="chevron"></i>
       </a>
       <a class="settings-row" href="#">
         <div class="row-left">
-          <div class="row-icon">
-            <svg viewBox="0 0 24 24"><line x1="3" y1="9" x2="21" y2="9"/><path d="M3 5h18a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z"/></svg>
-          </div>
+          <div class="row-icon"><i data-lucide="credit-card"></i></div>
           <span>Payment Methods</span>
         </div>
-        <svg class="chevron" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+        <i data-lucide="chevron-right" class="chevron"></i>
       </a>
       <a class="settings-row" href="#">
         <div class="row-left">
-          <div class="row-icon">
-            <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-          </div>
+          <div class="row-icon"><i data-lucide="bell"></i></div>
           <span>Notifications</span>
         </div>
-        <svg class="chevron" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+        <i data-lucide="chevron-right" class="chevron"></i>
       </a>
     </div>
 
@@ -127,9 +122,7 @@ $friends_count = (int)$r['cnt'];
       <div class="settings-label">PREFERENCES</div>
       <div class="settings-row">
         <div class="row-left">
-          <div class="row-icon">
-            <svg viewBox="0 0 24 24"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
-          </div>
+          <div class="row-icon"><i data-lucide="arrow-left-right"></i></div>
           <div>
             <div class="row-title">Default Currency</div>
             <div class="row-sub">Malaysian Ringgit (RM)</div>
@@ -139,9 +132,7 @@ $friends_count = (int)$r['cnt'];
       </div>
       <div class="settings-row">
         <div class="row-left">
-          <div class="row-icon">
-            <svg viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-          </div>
+          <div class="row-icon"><i data-lucide="moon"></i></div>
           <span>Dark Mode</span>
         </div>
         <label class="toggle">
@@ -151,9 +142,7 @@ $friends_count = (int)$r['cnt'];
       </div>
       <div class="settings-row">
         <div class="row-left">
-          <div class="row-icon">
-            <svg viewBox="0 0 24 24"><polyline points="6 2 3 6 3 20 21 20 21 6 18 2 6 2"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
-          </div>
+          <div class="row-icon"><i data-lucide="tag"></i></div>
           <span>Include SST by default</span>
         </div>
         <label class="toggle">

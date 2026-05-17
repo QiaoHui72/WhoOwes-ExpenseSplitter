@@ -106,29 +106,30 @@ function date_label($days_ago) {
   return $days_ago . ' days ago';
 }
 
-// Map DB icon slug → emoji
-function group_emoji($icon) {
+// Map DB icon slug → Lucide icon name
+function group_icon($icon) {
   return match($icon) {
-    'house'          => '🏠',
-    'flight_takeoff' => '✈️',
-    'coffee'         => '☕',
-    'receipt'        => '🧾',
-    'landscape'      => '🏔️',
-    default          => '👥',
+    'house'          => 'home',
+    'flight_takeoff' => 'plane',
+    'coffee'         => 'coffee',
+    'receipt'        => 'receipt',
+    'landscape'      => 'mountain',
+    'couple'         => 'heart',
+    default          => 'users',
   };
 }
 
-// Map category → inline SVG path
+// Map category → Lucide icon name
 function category_icon($cat) {
   return match($cat) {
-    'food'          => '<path d="M3 11l19-9-9 19-2-8-8-2z"/>',
-    'transport'     => '<rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/>',
-    'utilities'     => '<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/>',
-    'shopping'      => '<path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/>',
-    'entertainment' => '<polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/>',
-    'travel'        => '<path d="M22 2L11 13"/><path d="M22 2L15 22l-4-9-9-4 20-7z"/>',
-    'rent'          => '<path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>',
-    default         => '<circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>',
+    'food'          => 'utensils',
+    'transport'     => 'car',
+    'utilities'     => 'zap',
+    'shopping'      => 'shopping-bag',
+    'entertainment' => 'tv-2',
+    'travel'        => 'plane',
+    'rent'          => 'home',
+    default         => 'circle',
   };
 }
 
@@ -141,7 +142,8 @@ $dot_colors = ['#93c5fd','#6366f1','#4b5563','#f9a8d4','#6ee7b7','#fcd34d'];
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>WhoOwes Dashboard</title>
+  <title>WhoOwes — Dashboard</title>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <link rel="stylesheet" href="dashboard.css">
   <link rel="stylesheet" href="../Sidebar/sidebar.css">
 </head>
@@ -160,10 +162,6 @@ $dot_colors = ['#93c5fd','#6366f1','#4b5563','#f9a8d4','#6ee7b7','#fcd34d'];
         <h1><?= $greeting ?>, <?= htmlspecialchars(explode(' ', $user_name)[0]) ?></h1>
         <p>Here's a breakdown of your finances today.</p>
       </div>
-      <div class="topbar-actions">
-        <button class="btn-settle">Settle Up</button>
-
-      </div>
     </div>
 
     <!-- Stat Cards -->
@@ -181,7 +179,7 @@ $dot_colors = ['#93c5fd','#6366f1','#4b5563','#f9a8d4','#6ee7b7','#fcd34d'];
         <div style="display:flex;align-items:center;justify-content:space-between;">
           <div class="stat-label">You Owe</div>
           <div class="stat-icon owe">
-            <svg viewBox="0 0 24 24"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+            <i data-lucide="arrow-up-right"></i>
           </div>
         </div>
         <div class="stat-amount red"><?= fmt($you_owe) ?></div>
@@ -191,7 +189,7 @@ $dot_colors = ['#93c5fd','#6366f1','#4b5563','#f9a8d4','#6ee7b7','#fcd34d'];
         <div style="display:flex;align-items:center;justify-content:space-between;">
           <div class="stat-label">You Are Owed</div>
           <div class="stat-icon owed">
-            <svg viewBox="0 0 24 24"><line x1="17" y1="7" x2="7" y2="17"/><polyline points="17 17 7 17 7 7"/></svg>
+            <i data-lucide="arrow-down-left"></i>
           </div>
         </div>
         <div class="stat-amount green"><?= fmt($you_are_owed) ?></div>
@@ -214,10 +212,10 @@ $dot_colors = ['#93c5fd','#6366f1','#4b5563','#f9a8d4','#6ee7b7','#fcd34d'];
             $net     = $grp['owed_to_me'] - $grp['i_owe'];
             $members = $group_members_map[$grp['id']] ?? [];
           ?>
-          <div class="group-card">
+          <a class="group-card" href="../Group/group_details.php?id=<?= $grp['id'] ?>" style="text-decoration:none;color:inherit;display:block;">
             <div class="group-card-top">
-              <div class="group-img"><?= group_emoji($grp['icon']) ?></div>
-              <span class="group-chevron">›</span>
+              <div class="group-img"><i data-lucide="<?= group_icon($grp['icon']) ?>"></i></div>
+              <span class="group-chevron"><i data-lucide="chevron-right"></i></span>
             </div>
             <div class="group-name"><?= htmlspecialchars($grp['name']) ?></div>
             <div class="group-card-bottom">
@@ -244,17 +242,12 @@ $dot_colors = ['#93c5fd','#6366f1','#4b5563','#f9a8d4','#6ee7b7','#fcd34d'];
                 <?php endif; ?>
               </div>
             </div>
-          </div>
+          </a>
           <?php endforeach; ?>
 
           <!-- Create New Group -->
           <div class="group-card new-group">
-            <svg viewBox="0 0 24 24">
-              <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
-              <circle cx="9" cy="7" r="4"/>
-              <line x1="19" y1="8" x2="19" y2="14"/>
-              <line x1="16" y1="11" x2="22" y2="11"/>
-            </svg>
+            <i data-lucide="user-plus"></i>
             <span>Create New Group</span>
           </div>
 
@@ -276,7 +269,7 @@ $dot_colors = ['#93c5fd','#6366f1','#4b5563','#f9a8d4','#6ee7b7','#fcd34d'];
           ?>
           <div class="activity-item">
             <div class="activity-icon">
-              <svg viewBox="0 0 24 24"><?= category_icon($act['category']) ?></svg>
+              <i data-lucide="<?= category_icon($act['category']) ?>"></i>
             </div>
             <div class="activity-info">
               <strong><?= htmlspecialchars($act['title']) ?></strong>

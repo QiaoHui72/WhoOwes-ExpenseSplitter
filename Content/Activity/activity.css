@@ -4,7 +4,7 @@ html, body { height: 100%; overflow: hidden; }
 
 body {
   height: 100vh;
-  background: #1a1a2e;
+  background: #f7f8fa;
   display: flex;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
@@ -35,109 +35,73 @@ body {
   color: #111827;
 }
 
-/* ── Summary Row ── */
-.summary-row {
-  display: grid;
-  grid-template-columns: 1fr 0.45fr;
-  gap: 16px;
+/* ── Summary Banner ── */
+.summary-banner {
+  background: #1e3a7a;
+  border-radius: 16px;
+  padding: 28px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
 }
 
-/* Month card */
-.month-card {
-  background: #1e3a7a;
-  background-image: repeating-linear-gradient(
-    135deg,
-    rgba(255,255,255,0.04) 0px, rgba(255,255,255,0.04) 1px,
-    transparent 1px, transparent 14px
-  );
-  border-radius: 16px;
-  padding: 28px 30px;
+.banner-left {
+  flex: 1;
+  min-width: 0;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
 }
 
-.month-label {
-  font-size: 0.68rem;
+.banner-label {
+  font-size: .68rem;
   font-weight: 700;
-  letter-spacing: 0.12em;
+  letter-spacing: .12em;
   color: #93c5fd;
   text-transform: uppercase;
 }
 
-.month-heading {
-  font-size: 1.3rem;
-  font-weight: 700;
-  color: #fff;
-  line-height: 1.35;
-}
-
-.month-heading span {
+.banner-heading {
+  font-size: 1.4rem;
   font-weight: 800;
+  color: #fff;
 }
 
-.cat-badges {
+.banner-chips {
   display: flex;
   gap: 8px;
   flex-wrap: wrap;
-  margin-top: 4px;
 }
 
-.cat-badge {
-  background: rgba(255,255,255,0.15);
+.banner-chip {
+  background: rgba(255,255,255,.15);
   color: #fff;
-  font-size: 0.78rem;
+  font-size: .78rem;
   font-weight: 500;
   padding: 5px 14px;
   border-radius: 20px;
-  border: 1px solid rgba(255,255,255,0.25);
+  border: 1px solid rgba(255,255,255,.25);
 }
 
-/* Settle card */
-.settle-card {
-  background: #fff;
-  border-radius: 16px;
-  padding: 24px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  text-align: center;
+.banner-right {
+  text-align: right;
+  flex-shrink: 0;
 }
 
-.settle-icon-wrap {
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  background: #eef2ff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.banner-net-lbl {
+  font-size: .78rem;
+  color: rgba(255,255,255,.65);
+  margin-bottom: 4px;
 }
 
-.settle-icon-wrap svg {
-  width: 22px;
-  height: 22px;
-  stroke: #1e3a7a;
-  fill: none;
-  stroke-width: 2;
-  stroke-linecap: round;
-  stroke-linejoin: round;
+.banner-net-val {
+  font-size: 2rem;
+  font-weight: 900;
+  color: #4ade80;
 }
 
-.settle-pct {
-  font-size: 1.35rem;
-  font-weight: 800;
-  color: #111827;
-}
-
-.settle-sub {
-  font-size: 0.78rem;
-  color: #f59e0b;
-  font-weight: 500;
-  line-height: 1.4;
-}
+.banner-net-val.neg { color: #f87171; }
 
 /* ── Filter Tabs ── */
 .filter-tabs {
@@ -169,6 +133,9 @@ body {
   border-color: #1e3a7a;
   font-weight: 600;
 }
+
+/* Filter hidden */
+.act-hidden { display: none; }
 
 /* ── Feed ── */
 .feed {

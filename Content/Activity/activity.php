@@ -39,6 +39,24 @@ $sp = mysqli_fetch_assoc(mysqli_query($connect,
 ));
 $settled_pct = ($sp['total'] > 0) ? round($sp['settled'] / $sp['total'] * 100) : 100;
 
+// Month-to-date: owed to me (others' shares on expenses I paid)
+$month_owed = (float) mysqli_fetch_assoc(mysqli_query($connect,
+  "SELECT COALESCE(SUM(es.amount), 0) AS total
+   FROM expense_splits es JOIN expenses e ON e.id = es.expense_id
+   WHERE e.paid_by = $current_user_id AND es.user_id != $current_user_id
+     AND MONTH(e.expense_date) = MONTH(CURDATE()) AND YEAR(e.expense_date) = YEAR(CURDATE())"
+))['total'];
+
+// Month-to-date: my share on others' expenses
+$month_spent = (float) mysqli_fetch_assoc(mysqli_query($connect,
+  "SELECT COALESCE(SUM(es.amount), 0) AS total
+   FROM expense_splits es JOIN expenses e ON e.id = es.expense_id
+   WHERE es.user_id = $current_user_id AND e.paid_by != $current_user_id
+     AND MONTH(e.expense_date) = MONTH(CURDATE()) AND YEAR(e.expense_date) = YEAR(CURDATE())"
+))['total'];
+
+$month_net = $month_owed - $month_spent;
+
 // Recent expenses across user's groups
 $expenses = mysqli_fetch_all(mysqli_query($connect,
   "SELECT e.id, e.title, e.category, e.created_at,
@@ -123,17 +141,17 @@ function act_icon_style($cat, $type) {
   };
 }
 
-function act_icon_svg($cat, $type) {
-  if ($type === 'settlement') return '<polyline points="20 6 9 17 4 12"/>';
+function act_icon_lucide($cat, $type) {
+  if ($type === 'settlement') return 'check';
   return match($cat) {
-    'food'          => '<path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><line x1="7" y1="2" x2="7" y2="11"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3zm0 0v7"/>',
-    'utilities'     => '<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/>',
-    'shopping'      => '<path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/>',
-    'transport'     => '<rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/>',
-    'entertainment' => '<polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/>',
-    'travel'        => '<path d="M22 2L11 13"/><path d="M22 2L15 22l-4-9-9-4 20-7z"/>',
-    'rent'          => '<path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>',
-    default         => '<circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/>',
+    'food'          => 'utensils',
+    'utilities'     => 'zap',
+    'shopping'      => 'shopping-bag',
+    'transport'     => 'car',
+    'entertainment' => 'tv-2',
+    'travel'        => 'plane',
+    'rent'          => 'home',
+    default         => 'circle',
   };
 }
 ?>
@@ -144,6 +162,7 @@ function act_icon_svg($cat, $type) {
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>WhoOwes — Activity</title>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <link rel="stylesheet" href="activity.css">
   <link rel="stylesheet" href="../Sidebar/sidebar.css">
 </head>
@@ -157,40 +176,30 @@ function act_icon_svg($cat, $type) {
     <!-- Page Title -->
     <h1 class="page-title">Recent Activity</h1>
 
-    <!-- Summary Row -->
-    <div class="summary-row">
-
-      <div class="month-card">
-        <div class="month-label">MONTH TO DATE</div>
-        <div class="month-heading">
-          You've participated in <span><?= $month_count ?> transactions</span> this month
-        </div>
-        <div class="cat-badges">
-          <?php foreach ($top_cats as $tc): ?>
-          <span class="cat-badge"><?= (int)$tc['cnt'] ?> <?= htmlspecialchars(cat_display($tc['category'])) ?></span>
-          <?php endforeach; ?>
-          <?php if (empty($top_cats)): ?>
-          <span class="cat-badge">No activity yet</span>
-          <?php endif; ?>
+    <!-- Summary Banner -->
+    <div class="summary-banner">
+      <div class="banner-left">
+        <div class="banner-label">MONTH TO DATE</div>
+        <div class="banner-heading"><?= $month_count ?> transactions this month</div>
+        <div class="banner-chips">
+          <span class="banner-chip"><?= $month_count ?> transactions</span>
+          <span class="banner-chip">&#8593; <?= fmt($month_owed) ?> owed</span>
+          <span class="banner-chip">&#8595; <?= fmt($month_spent) ?> spent</span>
         </div>
       </div>
-
-      <div class="settle-card">
-        <div class="settle-icon-wrap">
-          <svg viewBox="0 0 24 24"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
-        </div>
-        <div class="settle-pct"><?= $settled_pct ?>% Settled</div>
-        <div class="settle-sub">Outstanding debts are down<br>this period</div>
+      <div class="banner-right">
+        <div class="banner-net-lbl">Net balance</div>
+        <div class="banner-net-val <?= $month_net >= 0 ? '' : 'neg' ?>"><?= ($month_net >= 0 ? '+' : '') . fmt(abs($month_net)) ?></div>
       </div>
-
     </div>
 
     <!-- Filter Tabs -->
     <div class="filter-tabs">
-      <button class="tab active">All Activity</button>
-      <button class="tab">Expenses</button>
-      <button class="tab">Payments</button>
-      <button class="tab">Group Updates</button>
+      <button class="tab active" data-filter="all">All</button>
+      <button class="tab" data-filter="expense">Expenses</button>
+      <button class="tab" data-filter="settlement">Settlements</button>
+      <button class="tab" data-filter="you-paid">You Paid</button>
+      <button class="tab" data-filter="you-owe">You Owe</button>
     </div>
 
     <!-- Activity Feed -->
@@ -208,7 +217,7 @@ function act_icon_svg($cat, $type) {
           $type  = $item['_type'];
           $cat   = $type === 'expense' ? ($item['category'] ?? '') : '';
           $style = act_icon_style($cat, $type);
-          $svg   = act_icon_svg($cat, $type);
+          $iname = act_icon_lucide($cat, $type);
           $when  = activity_time($item['_time']);
 
           if ($type === 'expense') {
@@ -232,9 +241,9 @@ function act_icon_svg($cat, $type) {
             $amount = fmt($item['amount']);
           }
         ?>
-        <div class="activity-item">
+        <div class="activity-item" data-filter="<?= $type === 'settlement' ? 'settlement' : ('expense ' . ($paid_by_me ? 'you-paid' : 'you-owe')) ?>">
           <div class="act-icon" style="background:<?= $style['bg'] ?>">
-            <svg viewBox="0 0 24 24" style="stroke:<?= $style['stroke'] ?>"><?= $svg ?></svg>
+            <i data-lucide="<?= $iname ?>" style="stroke:<?= $style['stroke'] ?>;fill:none;width:20px;height:20px;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"></i>
           </div>
           <div class="act-info">
             <p class="act-desc"><?= $desc ?></p>
@@ -251,15 +260,35 @@ function act_icon_svg($cat, $type) {
 
     </div>
 
-    <!-- View Full History -->
-    <div class="history-footer">
-      <a href="#" class="history-link">
-        <svg viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.93"/></svg>
-        View full activity history
-      </a>
-    </div>
-
   </main>
 </div>
+
+<script>
+(function () {
+  var tabs  = document.querySelectorAll('.filter-tabs .tab');
+  var items = document.querySelectorAll('.activity-item');
+  var groups = document.querySelectorAll('.date-group');
+
+  tabs.forEach(function (tab) {
+    tab.addEventListener('click', function () {
+      tabs.forEach(function (t) { t.classList.remove('active'); });
+      this.classList.add('active');
+
+      var filter = this.dataset.filter;
+
+      items.forEach(function (item) {
+        var types = item.dataset.filter.split(' ');
+        var show  = filter === 'all' || types.indexOf(filter) !== -1;
+        item.classList.toggle('act-hidden', !show);
+      });
+
+      groups.forEach(function (group) {
+        var hasVisible = group.querySelector('.activity-item:not(.act-hidden)');
+        group.classList.toggle('act-hidden', !hasVisible);
+      });
+    });
+  });
+})();
+</script>
 </body>
 </html>

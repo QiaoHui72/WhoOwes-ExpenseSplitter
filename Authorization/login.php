@@ -25,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($user && $password === $user['password']) {
       $_SESSION['user_id']   = $user['id'];
       $_SESSION['user_name'] = $user['name'];
-      header('Location: ../Content/Dashboard/dashboard.php');
+      header('Location: ../Content/Dashboard/index.php');
       exit;
     }
     $error = 'Incorrect email or password.';
