@@ -16,7 +16,7 @@ body {
   overflow: hidden;
 }
 
-/* ══ MAIN ══ */
+/* ── Main ── */
 .main {
   flex: 1;
   height: 100vh;
@@ -28,7 +28,7 @@ body {
   gap: 22px;
 }
 
-/* Page Title */
+/* ── Page Title ── */
 .page-title {
   font-size: 1.7rem;
   font-weight: 800;

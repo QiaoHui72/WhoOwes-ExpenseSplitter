@@ -39,7 +39,7 @@ $sp = mysqli_fetch_assoc(mysqli_query($connect,
 ));
 $settled_pct = ($sp['total'] > 0) ? round($sp['settled'] / $sp['total'] * 100) : 100;
 
-// Month-to-date: owed to me (others' shares on expenses I paid)
+// Month-to-date: owed to me 
 $month_owed = (float) mysqli_fetch_assoc(mysqli_query($connect,
   "SELECT COALESCE(SUM(es.amount), 0) AS total
    FROM expense_splits es JOIN expenses e ON e.id = es.expense_id
@@ -70,8 +70,8 @@ $expenses = mysqli_fetch_all(mysqli_query($connect,
    ORDER BY e.created_at DESC LIMIT 15"
 ), MYSQLI_ASSOC);
 
-// Recent settlements involving the user
-$settlements = mysqli_fetch_all(mysqli_query($connect,
+// Recent settlements involving the user (guard against missing table)
+$_sr = mysqli_query($connect,
   "SELECT s.id, s.amount, s.created_at, s.paid_by, s.paid_to,
      g.name AS group_name,
      uf.name AS from_name, ut.name AS to_name
@@ -81,7 +81,8 @@ $settlements = mysqli_fetch_all(mysqli_query($connect,
    JOIN users ut ON ut.id = s.paid_to
    WHERE s.paid_by = $current_user_id OR s.paid_to = $current_user_id
    ORDER BY s.created_at DESC LIMIT 10"
-), MYSQLI_ASSOC);
+);
+$settlements = $_sr ? mysqli_fetch_all($_sr, MYSQLI_ASSOC) : [];
 
 // Merge and sort
 $feed = [];

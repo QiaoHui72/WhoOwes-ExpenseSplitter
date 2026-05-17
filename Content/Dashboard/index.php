@@ -2,25 +2,25 @@
 session_start();
 include '../../database.php';
 
-// ── Redirect to login if not authenticated ──
+// Redirect to login if not authenticated 
 if (empty($_SESSION['user_id'])) {
   header('Location: ../../Authorization/login.php');
   exit;
 }
 $current_user_id = (int) $_SESSION['user_id'];
 
-// ── Fetch current user ──
+// Fetch current user 
 $u = mysqli_fetch_assoc(mysqli_query($connect,
   "SELECT * FROM users WHERE id = $current_user_id LIMIT 1"
 ));
 $user_name    = $u['name'];
 $user_initials = strtoupper(implode('', array_map(fn($p) => $p[0], explode(' ', trim($user_name)))));
 
-// ── Greeting ──
+// Greeting 
 $hour = (int) date('G');
 $greeting = $hour < 12 ? 'Good Morning' : ($hour < 17 ? 'Good Afternoon' : 'Good Evening');
 
-// ── You Owe (unsettled splits where someone else paid) ──
+// You Owe (unsettled splits where someone else paid) 
 $r = mysqli_fetch_assoc(mysqli_query($connect,
   "SELECT COALESCE(SUM(es.amount), 0) AS total
    FROM expense_splits es
@@ -31,7 +31,7 @@ $r = mysqli_fetch_assoc(mysqli_query($connect,
 ));
 $you_owe = (float) $r['total'];
 
-// ── You Are Owed (others' unsettled splits on expenses you paid) ──
+// You Are Owed (others' unsettled splits on expenses you paid)
 $r = mysqli_fetch_assoc(mysqli_query($connect,
   "SELECT COALESCE(SUM(es.amount), 0) AS total
    FROM expense_splits es
@@ -45,7 +45,7 @@ $you_are_owed = (float) $r['total'];
 $total_balance = $you_are_owed - $you_owe;
 $balance_positive = $total_balance >= 0;
 
-// ── Active Groups (latest 2 groups the user belongs to) ──
+// Active Groups (latest 2 groups the user belongs to) 
 $groups_result = mysqli_query($connect,
   "SELECT g.id, g.name, g.icon,
      (SELECT COUNT(*) FROM group_members gm2 WHERE gm2.group_id = g.id) AS member_count,
@@ -81,7 +81,7 @@ foreach ($active_groups as $grp) {
   $group_members_map[$gid] = mysqli_fetch_all($mr, MYSQLI_ASSOC);
 }
 
-// ── Recent Activity (last 3 expenses in user's groups) ──
+// Recent Activity (last 6 expenses in user's groups) 
 $activity_result = mysqli_query($connect,
   "SELECT e.title, e.category, e.expense_date, e.paid_by,
      u.name AS payer_name,
@@ -93,11 +93,11 @@ $activity_result = mysqli_query($connect,
    JOIN users u ON u.id = e.paid_by
    JOIN group_members gm ON gm.group_id = e.group_id AND gm.user_id = $current_user_id
    ORDER BY e.expense_date DESC, e.created_at DESC
-   LIMIT 3"
+   LIMIT 6"
 );
 $activities = mysqli_fetch_all($activity_result, MYSQLI_ASSOC);
 
-// ── Helpers ──
+// Helpers 
 function fmt($n) { return 'RM ' . number_format($n, 2); }
 
 function date_label($days_ago) {
@@ -116,6 +116,19 @@ function group_icon($icon) {
     'landscape'      => 'mountain',
     'couple'         => 'heart',
     default          => 'users',
+  };
+}
+
+// Map DB icon slug → bg + stroke colours (matches group.php)
+function group_icon_style($icon) {
+  return match($icon) {
+    'house'          => ['bg' => '#ede9fe', 'stroke' => '#7c3aed'],
+    'flight_takeoff' => ['bg' => '#e0f2fe', 'stroke' => '#0284c7'],
+    'coffee'         => ['bg' => '#dcfce7', 'stroke' => '#16a34a'],
+    'receipt'        => ['bg' => '#fee2e2', 'stroke' => '#dc2626'],
+    'landscape'      => ['bg' => '#fef3c7', 'stroke' => '#d97706'],
+    'couple'         => ['bg' => '#fce7f3', 'stroke' => '#db2777'],
+    default          => ['bg' => '#eef2ff', 'stroke' => '#1e3a7a'],
   };
 }
 
@@ -211,10 +224,11 @@ $dot_colors = ['#93c5fd','#6366f1','#4b5563','#f9a8d4','#6ee7b7','#fcd34d'];
           <?php foreach ($active_groups as $grp):
             $net     = $grp['owed_to_me'] - $grp['i_owe'];
             $members = $group_members_map[$grp['id']] ?? [];
+            $gstyle  = group_icon_style($grp['icon']);
           ?>
           <a class="group-card" href="../Group/group_details.php?id=<?= $grp['id'] ?>" style="text-decoration:none;color:inherit;display:block;">
             <div class="group-card-top">
-              <div class="group-img"><i data-lucide="<?= group_icon($grp['icon']) ?>"></i></div>
+              <div class="group-img" style="background:<?= $gstyle['bg'] ?>"><i data-lucide="<?= group_icon($grp['icon']) ?>" style="stroke:<?= $gstyle['stroke'] ?>;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round"></i></div>
               <span class="group-chevron"><i data-lucide="chevron-right"></i></span>
             </div>
             <div class="group-name"><?= htmlspecialchars($grp['name']) ?></div>

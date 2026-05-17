@@ -1,6 +1,16 @@
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 
-html, body { height: 100%; overflow: hidden; }
+html,
+body {
+  height: 100%;
+  overflow: hidden;
+}
 
 body {
   height: 100vh;
@@ -16,7 +26,7 @@ body {
   overflow: hidden;
 }
 
-/* ══ MAIN ══ */
+/* MAIN */
 .main {
   flex: 1;
   height: 100vh;
@@ -68,8 +78,13 @@ body {
   transition: border-color 0.2s;
 }
 
-.search-input:focus { border-color: #1e3a7a; }
-.search-input::placeholder { color: #9ca3af; }
+.search-input:focus {
+  border-color: #1e3a7a;
+}
+
+.search-input::placeholder {
+  color: #9ca3af;
+}
 
 /* ── Stats Row ── */
 .stats-row {
@@ -89,8 +104,13 @@ body {
   text-align: center;
 }
 
-.stat-card.green-tint { background: #f0fdf4; }
-.stat-card.red-tint   { background: #fff1f0; }
+.stat-card.green-tint {
+  background: #f0fdf4;
+}
+
+.stat-card.red-tint {
+  background: #fff1f0;
+}
 
 .stat-num {
   font-size: 1.7rem;
@@ -98,9 +118,17 @@ body {
   color: #111827;
 }
 
-.stat-num.blue  { color: #1e3a7a; }
-.stat-num.green { color: #16a34a; }
-.stat-num.red   { color: #dc2626; }
+.stat-num.blue {
+  color: #1e3a7a;
+}
+
+.stat-num.green {
+  color: #16a34a;
+}
+
+.stat-num.red {
+  color: #dc2626;
+}
 
 .stat-desc {
   font-size: 0.82rem;
@@ -136,7 +164,9 @@ body {
   transition: background 0.2s;
 }
 
-.btn-add-friend:hover { background: #162d60; }
+.btn-add-friend:hover {
+  background: #162d60;
+}
 
 .btn-add-friend svg {
   width: 15px;
@@ -183,8 +213,13 @@ body {
   cursor: pointer;
 }
 
-.friend-row:last-child { border-bottom: none; }
-.friend-row:hover { background: #f9fafb; }
+.friend-row:last-child {
+  border-bottom: none;
+}
+
+.friend-row:hover {
+  background: #f9fafb;
+}
 
 .friend-avatar {
   width: 46px;
@@ -229,8 +264,13 @@ body {
   color: #111827;
 }
 
-.balance-amount.red  { color: #dc2626; }
-.balance-amount.gray { color: #6b7280; }
+.balance-amount.red {
+  color: #dc2626;
+}
+
+.balance-amount.gray {
+  color: #6b7280;
+}
 
 .balance-desc {
   display: block;
@@ -239,8 +279,13 @@ body {
   margin-top: 2px;
 }
 
-.balance-desc.red  { color: #dc2626; }
-.balance-desc.gray { color: #9ca3af; }
+.balance-desc.red {
+  color: #dc2626;
+}
+
+.balance-desc.gray {
+  color: #9ca3af;
+}
 
 /* ── Actions ── */
 .friend-actions {
@@ -264,7 +309,9 @@ body {
   transition: background 0.2s;
 }
 
-.settle-btn:hover { background: #162d60; }
+.settle-btn:hover {
+  background: #162d60;
+}
 
 .settled-chip {
   display: inline-flex;

@@ -1,17 +1,41 @@
-/* gd-* = group-details ─────────────────────────────── */
-* { box-sizing: border-box; }
-body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f7f8fa; color: #111827; }
+* {
+  box-sizing: border-box;
+}
 
-.app  { display: flex; min-height: 100vh; }
-.main { flex: 1; padding: 28px 32px 48px; overflow-y: auto; min-width: 0; }
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: #f7f8fa;
+  color: #111827;
+}
+
+.app {
+  display: flex;
+  min-height: 100vh;
+}
+
+.main {
+  flex: 1;
+  padding: 28px 32px 48px;
+  overflow-y: auto;
+  min-width: 0;
+}
 
 /* Back link */
 .gd-back {
-  display: inline-flex; align-items: center; gap: 5px;
-  font-size: .84rem; color: #6b7280; text-decoration: none; margin-bottom: 16px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: .84rem;
+  color: #6b7280;
+  text-decoration: none;
+  margin-bottom: 16px;
   transition: color .15s;
 }
-.gd-back:hover { color: #1e3a7a; }
+
+.gd-back:hover {
+  color: #1e3a7a;
+}
 
 /* Hero */
 .gd-hero {
@@ -24,16 +48,36 @@ body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Ro
   gap: 20px;
   margin-bottom: 20px;
 }
+
 .gd-hero-icon {
-  width: 64px; height: 64px;
+  width: 64px;
+  height: 64px;
   border-radius: 18px;
-  background: rgba(255,255,255,.15);
-  display: flex; align-items: center; justify-content: center;
+  background: rgba(255, 255, 255, .15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
   flex-shrink: 0;
 }
-.gd-hero-info { flex: 1; min-width: 0; }
-.gd-hero-name { font-size: 1.6rem; font-weight: 800; margin-bottom: 6px; }
-.gd-hero-meta { font-size: .84rem; opacity: .75; display: flex; gap: 18px; flex-wrap: wrap; }
+
+.gd-hero-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.gd-hero-name {
+  font-size: 1.6rem;
+  font-weight: 800;
+  margin-bottom: 6px;
+}
+
+.gd-hero-meta {
+  font-size: .84rem;
+  opacity: .75;
+  display: flex;
+  gap: 18px;
+  flex-wrap: wrap;
+}
 
 /* Stat cards */
 .gd-stats {
@@ -42,60 +86,134 @@ body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Ro
   gap: 14px;
   margin-bottom: 20px;
 }
+
 .gd-stat-card {
   background: #fff;
   border-radius: 14px;
   padding: 18px 20px;
-  box-shadow: 0 1px 4px rgba(0,0,0,.06);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, .06);
   display: flex;
   flex-direction: column;
 }
+
 .gd-stat-lbl {
-  font-size: .68rem; font-weight: 700; letter-spacing: .1em;
-  text-transform: uppercase; color: #9ca3af; margin-bottom: 8px;
+  font-size: .68rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: #9ca3af;
+  margin-bottom: 8px;
 }
-.gd-stat-val { font-size: 1.3rem; font-weight: 800; color: #111827; flex: 1; }
-.gd-stat-val.red   { color: #be123c; }
-.gd-stat-val.green { color: #15803d; }
+
+.gd-stat-val {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: #111827;
+  flex: 1;
+}
+
+.gd-stat-val.red {
+  color: #be123c;
+}
+
+.gd-stat-val.green {
+  color: #15803d;
+}
 
 .gd-badge {
-  display: inline-block; padding: 2px 8px; border-radius: 99px;
-  font-size: .67rem; font-weight: 700; letter-spacing: .04em;
-  margin-left: 6px; vertical-align: middle;
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 99px;
+  font-size: .67rem;
+  font-weight: 700;
+  letter-spacing: .04em;
+  margin-left: 6px;
+  vertical-align: middle;
 }
-.gd-badge.owe     { background: #fee2e2; color: #be123c; }
-.gd-badge.owed    { background: #dcfce7; color: #15803d; }
-.gd-badge.settled { background: #f0fdf4; color: #16a34a; }
+
+.gd-badge.owe {
+  background: #fee2e2;
+  color: #be123c;
+}
+
+.gd-badge.owed {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.gd-badge.settled {
+  background: #f0fdf4;
+  color: #16a34a;
+}
 
 .gd-settle-btn {
   margin-top: 12px;
   padding: 10px;
-  background: #1e3a7a; color: #fff;
-  border: none; border-radius: 10px;
-  font-size: .85rem; font-weight: 700;
-  cursor: pointer; transition: background .15s;
+  background: #1e3a7a;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-size: .85rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background .15s;
 }
-.gd-settle-btn:hover { background: #162d5e; }
+
+.gd-settle-btn:hover {
+  background: #162d5e;
+}
 
 /* Progress bar */
 .gd-progress-card {
   background: #fff;
   border-radius: 14px;
   padding: 18px 20px;
-  box-shadow: 0 1px 4px rgba(0,0,0,.06);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, .06);
   margin-bottom: 20px;
 }
-.gd-progress-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 10px; }
-.gd-progress-title  { font-size: .88rem; font-weight: 700; color: #111827; }
-.gd-progress-pct    { font-size: .85rem; font-weight: 700; color: #1e3a7a; }
-.gd-progress-track  { height: 8px; background: #f3f4f6; border-radius: 4px; overflow: hidden; }
+
+.gd-progress-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 10px;
+}
+
+.gd-progress-title {
+  font-size: .88rem;
+  font-weight: 700;
+  color: #111827;
+}
+
+.gd-progress-pct {
+  font-size: .85rem;
+  font-weight: 700;
+  color: #1e3a7a;
+}
+
+.gd-progress-track {
+  height: 8px;
+  background: #f3f4f6;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
 .gd-progress-fill {
-  height: 100%; border-radius: 4px;
+  height: 100%;
+  border-radius: 4px;
   background: linear-gradient(90deg, #1e3a7a, #2d5be3);
   transition: width .4s ease;
 }
-.gd-progress-fill.full { background: #15803d; }
-.gd-progress-sub { font-size: .76rem; color: #9ca3af; margin-top: 6px; }
+
+.gd-progress-fill.full {
+  background: #15803d;
+}
+
+.gd-progress-sub {
+  font-size: .76rem;
+  color: #9ca3af;
+  margin-top: 6px;
+}
 
 /* Two-column grid */
 .gd-grid {
@@ -111,60 +229,163 @@ body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Ro
   background: #fff;
   border-radius: 14px;
   padding: 20px 22px;
-  box-shadow: 0 1px 4px rgba(0,0,0,.06);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, .06);
 }
-.gd-panel-title { font-size: .95rem; font-weight: 700; color: #111827; margin-bottom: 14px; }
+
+.gd-panel-title {
+  font-size: .95rem;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 14px;
+}
 
 /* Date label */
 .gd-date-lbl {
-  font-size: .67rem; font-weight: 700; letter-spacing: .08em;
-  text-transform: uppercase; color: #9ca3af; margin: 14px 0 6px;
+  font-size: .67rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: #9ca3af;
+  margin: 14px 0 6px;
 }
-.gd-date-lbl:first-of-type { margin-top: 0; }
+
+.gd-date-lbl:first-of-type {
+  margin-top: 0;
+}
 
 /* Expense row */
 .gd-exp-row {
-  display: flex; align-items: center; gap: 12px;
-  padding: 10px 0; border-bottom: 1px solid #f3f4f6;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid #f3f4f6;
 }
-.gd-exp-row:last-child { border-bottom: none; }
-.gd-exp-ico {
-  width: 36px; height: 36px; border-radius: 10px;
-  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-}
-.gd-exp-info { flex: 1; min-width: 0; }
-.gd-exp-title { font-size: .88rem; font-weight: 600; color: #111827; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.gd-exp-sub   { font-size: .75rem; color: #6b7280; margin-top: 1px; }
-.gd-exp-amt   { text-align: right; flex-shrink: 0; }
-.gd-exp-total { font-size: .88rem; font-weight: 700; color: #111827; }
 
-.gd-empty { text-align: center; padding: 28px 0; color: #9ca3af; font-size: .86rem; }
+.gd-exp-row:last-child {
+  border-bottom: none;
+}
+
+.gd-exp-ico {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.gd-exp-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.gd-exp-title {
+  font-size: .88rem;
+  font-weight: 600;
+  color: #111827;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.gd-exp-sub {
+  font-size: .75rem;
+  color: #6b7280;
+  margin-top: 1px;
+}
+
+.gd-exp-amt {
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.gd-exp-total {
+  font-size: .88rem;
+  font-weight: 700;
+  color: #111827;
+}
+
+.gd-empty {
+  text-align: center;
+  padding: 28px 0;
+  color: #9ca3af;
+  font-size: .86rem;
+}
 
 /* Member row */
 .gd-member-row {
-  display: flex; align-items: center; gap: 12px;
-  padding: 10px 0; border-bottom: 1px solid #f3f4f6;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid #f3f4f6;
 }
-.gd-member-row:last-child { border-bottom: none; }
+
+.gd-member-row:last-child {
+  border-bottom: none;
+}
+
 .gd-mem-avatar {
-  width: 38px; height: 38px; border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  font-size: .74rem; font-weight: 700; color: #fff; flex-shrink: 0;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: .74rem;
+  font-weight: 700;
+  color: #fff;
+  flex-shrink: 0;
 }
-.gd-mem-info { flex: 1; min-width: 0; }
-.gd-mem-name { font-size: .88rem; font-weight: 600; color: #111827; }
-.gd-mem-status { font-size: .76rem; margin-top: 2px; }
-.gd-mem-status.green { color: #15803d; }
-.gd-mem-status.red   { color: #be123c; }
-.gd-mem-status.gray  { color: #9ca3af; }
+
+.gd-mem-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.gd-mem-name {
+  font-size: .88rem;
+  font-weight: 600;
+  color: #111827;
+}
+
+.gd-mem-status {
+  font-size: .76rem;
+  margin-top: 2px;
+}
+
+.gd-mem-status.green {
+  color: #15803d;
+}
+
+.gd-mem-status.red {
+  color: #be123c;
+}
+
+.gd-mem-status.gray {
+  color: #9ca3af;
+}
 
 /* Add Expense button */
 .gd-add-btn {
-  display: flex; align-items: center; justify-content: center; gap: 8px;
-  width: 100%; padding: 15px;
-  background: #1e3a7a; color: #fff;
-  border: none; border-radius: 14px;
-  font-size: .98rem; font-weight: 700;
-  cursor: pointer; transition: background .15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 15px;
+  background: #1e3a7a;
+  color: #fff;
+  border: none;
+  border-radius: 14px;
+  font-size: .98rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background .15s;
 }
-.gd-add-btn:hover { background: #162d5e; }
+
+.gd-add-btn:hover {
+  background: #162d5e;
+}

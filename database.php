@@ -6,10 +6,7 @@ $password = ""; //default password is empty
 $dbname = "whoowes"; //database name
 
 $connect = mysqli_connect($servername, $username, $password, $dbname);
-//1. check connection
-if(!$connect){
-//    echo "Connection Successful<br>";
-//}else{
+if (!$connect) {
     die("Connection Failed: " . mysqli_connect_error());
 }
 ?>

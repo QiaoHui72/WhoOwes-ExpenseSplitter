@@ -1,230 +1,4 @@
-<style>
-/* ag-* = add-group modal ──────────────────────────────────────── */
-.ag-overlay {
-  position: fixed; inset: 0;
-  background: rgba(0,0,0,.45);
-  display: none;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-  padding: 16px;
-}
-.ag-modal {
-  background: #fff;
-  border-radius: 20px;
-  width: min(500px, 100%);
-  max-height: 90vh;
-  overflow-y: auto;
-  box-shadow: 0 20px 60px rgba(0,0,0,.25);
-  scrollbar-width: none;
-}
-.ag-modal::-webkit-scrollbar { display: none; }
-
-/* Header */
-.ag-hdr {
-  text-align: center;
-  padding: 32px 32px 0;
-}
-.ag-hdr h2 {
-  font-size: 1.4rem;
-  font-weight: 800;
-  color: #111827;
-  margin: 0 0 6px;
-}
-.ag-hdr p {
-  font-size: .87rem;
-  color: #6b7280;
-  margin: 0;
-}
-
-/* Body */
-.ag-body {
-  padding: 24px 32px 32px;
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-}
-.ag-lbl {
-  display: block;
-  font-size: .86rem;
-  font-weight: 700;
-  color: #111827;
-  margin-bottom: 8px;
-}
-.ag-txt {
-  width: 100%;
-  padding: 12px 16px;
-  background: #f3f4f6;
-  border: 1.5px solid transparent;
-  border-radius: 10px;
-  font-size: .92rem;
-  color: #111827;
-  outline: none;
-  transition: border-color .2s, background .2s;
-  box-sizing: border-box;
-}
-.ag-txt:focus { border-color: #1e3a7a; background: #fff; }
-.ag-txt::placeholder { color: #9ca3af; }
-.ag-txt.ag-err { border-color: #ef4444; }
-
-/* Category chips */
-.ag-cats {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 10px;
-}
-.ag-cat {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  padding: 16px 4px;
-  border: 1.5px solid #e5e7eb;
-  border-radius: 12px;
-  background: #fff;
-  cursor: pointer;
-  font-size: .82rem;
-  color: #374151;
-  font-weight: 600;
-  transition: border-color .15s, background .15s, color .15s;
-}
-.ag-cat svg {
-  width: 22px; height: 22px;
-  stroke: #6b7280; fill: none;
-  stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;
-  transition: stroke .15s;
-}
-.ag-cat.active { border-color: #1e3a7a; background: #eef2ff; color: #1e3a7a; }
-.ag-cat.active svg { stroke: #1e3a7a; }
-.ag-cat:hover:not(.active) { border-color: #9ca3af; }
-
-/* Member search */
-.ag-srch-wrap {
-  position: relative;
-  display: flex;
-  align-items: center;
-  background: #f3f4f6;
-  border: 1.5px solid transparent;
-  border-radius: 10px;
-  padding: 10px 14px;
-  gap: 10px;
-  transition: border-color .2s, background .2s;
-}
-.ag-srch-wrap:focus-within { border-color: #1e3a7a; background: #fff; }
-.ag-srch-ico {
-  width: 16px; height: 16px;
-  stroke: #9ca3af; fill: none; flex-shrink: 0;
-  stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
-}
-.ag-srch-inp {
-  border: none; background: none; outline: none;
-  flex: 1; font-size: .9rem; color: #111827; min-width: 0;
-}
-.ag-srch-inp::placeholder { color: #9ca3af; }
-
-/* Dropdown */
-.ag-dd {
-  position: absolute;
-  top: calc(100% + 6px);
-  left: 0; right: 0;
-  background: #fff;
-  border: 1px solid #e5e7eb;
-  border-radius: 10px;
-  box-shadow: 0 8px 24px rgba(0,0,0,.12);
-  max-height: 200px;
-  overflow-y: auto;
-  display: none;
-  z-index: 20;
-}
-.ag-dd-item {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 10px 14px;
-  cursor: pointer;
-  transition: background .1s;
-}
-.ag-dd-item:hover { background: #f9fafb; }
-.ag-dd-item + .ag-dd-item { border-top: 1px solid #f3f4f6; }
-.ag-dd-init {
-  width: 32px; height: 32px;
-  border-radius: 50%;
-  background: #1e3a7a;
-  color: #fff;
-  font-size: .72rem; font-weight: 700;
-  display: flex; align-items: center; justify-content: center;
-  flex-shrink: 0;
-}
-.ag-dd-name { font-size: .88rem; font-weight: 600; color: #111827; }
-.ag-dd-email { font-size: .76rem; color: #9ca3af; }
-
-/* Member chips */
-.ag-chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 10px;
-}
-.ag-chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  padding: 5px 12px;
-  border-radius: 99px;
-  font-size: .82rem;
-  font-weight: 600;
-}
-.ag-chip-you { background: #99f6e4; color: #065f46; }
-.ag-chip-mem {
-  background: #f3f4f6;
-  color: #374151;
-  border: 1px solid #e5e7eb;
-}
-.ag-chip-mem button {
-  background: none; border: none; cursor: pointer;
-  font-size: .9rem; line-height: 1; color: #9ca3af;
-  padding: 0; display: flex; align-items: center;
-}
-.ag-chip-mem button:hover { color: #ef4444; }
-
-/* Create button */
-.ag-btn-create {
-  width: 100%;
-  padding: 14px;
-  background: #1e3a7a;
-  color: #fff;
-  border: none;
-  border-radius: 12px;
-  font-size: .98rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: background .15s;
-  margin-top: 4px;
-}
-.ag-btn-create:hover:not(:disabled) { background: #162d5e; }
-.ag-btn-create:disabled { opacity: .6; cursor: default; }
-
-/* Cancel */
-.ag-cancel-row { text-align: center; }
-.ag-cancel {
-  font-size: .88rem;
-  color: #1e3a7a;
-  font-weight: 600;
-  text-decoration: none;
-  cursor: pointer;
-}
-.ag-cancel:hover { text-decoration: underline; }
-
-/* Footer note */
-.ag-note {
-  font-size: .78rem;
-  color: #9ca3af;
-  text-align: center;
-  line-height: 1.5;
-}
-</style>
-
+<link rel="stylesheet" href="../AddGroup/add_group.css">
 <div id="agOverlay" class="ag-overlay">
   <div class="ag-modal">
 
@@ -342,7 +116,7 @@
     document.querySelector('.new-card')?.addEventListener('click', agOpen);
   });
 
-  // ── Reset ───────────────────────────────────────────────────────
+  /* ── Reset ── */
   function agReset() {
     agMembers = [];
     var nameEl = document.getElementById('agName');
@@ -359,7 +133,7 @@
     btn.textContent = 'Create Group';
   }
 
-  // ── Category ────────────────────────────────────────────────────
+  /* ── Category ── */
   document.querySelectorAll('.ag-cat').forEach(function (btn) {
     btn.addEventListener('click', function () {
       document.querySelectorAll('.ag-cat').forEach(function (b) { b.classList.remove('active'); });
@@ -367,7 +141,7 @@
     });
   });
 
-  // ── Member search ───────────────────────────────────────────────
+  /* ── Member Search ── */
   function agFilteredUsers() {
     var ids = agMembers.map(function (m) { return m.id; });
     var q   = document.getElementById('agMemberInput').value.trim().toLowerCase();
@@ -446,7 +220,7 @@
     document.getElementById('agChips').innerHTML = html;
   }
 
-  // ── Submit ──────────────────────────────────────────────────────
+  /* ── Submit ── */
   window.agSubmit = function () {
     var nameEl = document.getElementById('agName');
     var name   = nameEl.value.trim();

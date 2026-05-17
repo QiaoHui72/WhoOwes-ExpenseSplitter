@@ -44,7 +44,7 @@ $friends_count = (int)$r['cnt'];
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>WhoOwes — Profile</title>
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
-  <link rel="stylesheet" href="user_profile.css">
+  <link rel="stylesheet" href="user_profile.css?v=2">
   <link rel="stylesheet" href="../Sidebar/sidebar.css">
 </head>
 <body>
@@ -146,31 +146,13 @@ $friends_count = (int)$r['cnt'];
         </div>
         <span class="pref-value">MYR</span>
       </div>
-      <div class="settings-row">
-        <div class="row-left">
-          <div class="row-icon"><i data-lucide="tag"></i></div>
-          <div>
-            <div class="row-title">Include SST by default</div>
-            <div class="row-sub" id="sstSubText">All tax off</div>
-          </div>
-        </div>
-        <label class="toggle">
-          <input type="checkbox" id="sstToggle" onchange="sstChange()">
-          <span class="toggle-slider"></span>
-        </label>
-      </div>
-      <div id="sstRates" class="sst-rates" style="display:none;">
-        <div class="sst-chip" data-rate="6">SST 6%</div>
-        <div class="sst-chip" data-rate="10">SST 10%</div>
-        <div class="sst-chip closed">SST 8%<span class="sst-closed-lbl">Closed</span></div>
-      </div>
     </div>
 
   </main>
 </div>
 
 <!-- Edit Profile Modal -->
-<div id="epOverlay" class="ep-overlay">
+<div id="epOverlay" class="ep-overlay" style="display:none;">
   <div class="ep-modal">
     <div class="ep-header">
       <span class="ep-title">Edit Profile</span>
@@ -198,7 +180,7 @@ $friends_count = (int)$r['cnt'];
 </div>
 
 <script>
-// ── Edit Profile ──────────────────────────────────────────────────
+// Edit Profile 
 function epOpen() { document.getElementById('epOverlay').style.display = 'flex'; }
 function epClose() { document.getElementById('epOverlay').style.display = 'none'; }
 document.getElementById('epOverlay').addEventListener('click', function (e) {
@@ -233,23 +215,6 @@ function epSubmit(e) {
   });
 }
 
-// ── SST ───────────────────────────────────────────────────────────
-function sstChange() {
-  var on    = document.getElementById('sstToggle').checked;
-  var rates = document.getElementById('sstRates');
-  rates.style.display = on ? 'flex' : 'none';
-  document.getElementById('sstSubText').textContent = on ? 'Choose a rate below' : 'All tax off';
-  if (on) {
-    document.querySelectorAll('.sst-chip:not(.closed)').forEach(function (c) { c.classList.remove('selected'); });
-    document.querySelector('.sst-chip[data-rate="6"]').classList.add('selected');
-  }
-}
-document.querySelectorAll('.sst-chip:not(.closed)').forEach(function (chip) {
-  chip.addEventListener('click', function () {
-    document.querySelectorAll('.sst-chip:not(.closed)').forEach(function (c) { c.classList.remove('selected'); });
-    this.classList.add('selected');
-  });
-});
 </script>
 </body>
 </html>

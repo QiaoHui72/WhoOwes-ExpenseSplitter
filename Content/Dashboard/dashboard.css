@@ -26,7 +26,7 @@ body {
     overflow: hidden;
 }
 
-/* ══ MAIN ══ */
+/* MAIN */
 .main {
     flex: 1;
     height: 100vh;
@@ -350,7 +350,21 @@ body {
 .activity-list {
     background: #fff;
     border-radius: 14px;
-    overflow: hidden;
+    overflow-y: auto;
+    max-height: 420px;
+}
+
+.activity-list::-webkit-scrollbar {
+    width: 4px;
+}
+
+.activity-list::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.activity-list::-webkit-scrollbar-thumb {
+    background: #d1d5db;
+    border-radius: 99px;
 }
 
 .activity-item {

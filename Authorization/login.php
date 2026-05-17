@@ -97,7 +97,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           <input type="checkbox" name="remember" <?= isset($_POST['remember']) ? 'checked' : '' ?> />
           Remember me
         </label>
-        <a href="forgot-password.php" class="forgot">Forgot password?</a>
       </div>
 
       <button type="submit" class="btn-primary">Sign In</button>

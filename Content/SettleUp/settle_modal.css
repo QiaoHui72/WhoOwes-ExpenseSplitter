@@ -1,0 +1,298 @@
+.su-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, .45);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 16px;
+}
+
+.su-modal {
+    background: #fff;
+    border-radius: 20px;
+    width: min(820px, 100%);
+    max-height: 90vh;
+    display: flex;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, .25);
+}
+
+/* ── Left panel ── */
+.su-left {
+    width: 320px;
+    flex-shrink: 0;
+    background: #f9fafb;
+    border-right: 1px solid #f0f0f0;
+    padding: 28px 24px;
+    overflow-y: auto;
+    scrollbar-width: none;
+}
+
+.su-left::-webkit-scrollbar {
+    display: none;
+}
+
+/* ── Right panel ── */
+.su-right {
+    flex: 1;
+    padding: 28px 28px 24px;
+    overflow-y: auto;
+    scrollbar-width: none;
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+    min-width: 0;
+}
+
+.su-right::-webkit-scrollbar {
+    display: none;
+}
+
+/* Section label */
+.su-lbl {
+    font-size: .7rem;
+    font-weight: 700;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: #9ca3af;
+    margin-bottom: 12px;
+}
+
+.su-panel-title {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: #111827;
+    margin-bottom: 20px;
+}
+
+/* ── Debt cards (left) ── */
+.su-debt-card {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px;
+    border-radius: 12px;
+    margin-bottom: 8px;
+}
+
+.su-debt-card.owe {
+    background: #fff1f0;
+}
+
+.su-debt-card.owed {
+    background: #f0fdf4;
+}
+
+.su-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: .76rem;
+    font-weight: 700;
+    flex-shrink: 0;
+    letter-spacing: .5px;
+}
+
+.su-debt-card.owe .su-avatar {
+    background: #9f1239;
+    color: #fff;
+}
+
+.su-debt-card.owed .su-avatar {
+    background: #14532d;
+    color: #fff;
+}
+
+.su-debt-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.su-debt-text {
+    font-size: .88rem;
+    color: #374151;
+}
+
+.su-debt-text strong {
+    font-weight: 700;
+    color: #111827;
+}
+
+.su-debt-amt {
+    font-size: .9rem;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+.su-debt-card.owe .su-debt-amt {
+    color: #be123c;
+}
+
+.su-debt-card.owed .su-debt-amt {
+    color: #15803d;
+}
+
+.su-no-debt {
+    text-align: center;
+    padding: 32px 0;
+    color: #9ca3af;
+    font-size: .88rem;
+}
+
+/* ── Pay chips (right) ── */
+.su-pay-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.su-pay-chip {
+    padding: 8px 16px;
+    border-radius: 99px;
+    border: 1.5px solid #e5e7eb;
+    background: #fff;
+    font-size: .83rem;
+    font-weight: 600;
+    color: #374151;
+    cursor: pointer;
+    transition: border-color .15s, background .15s, color .15s;
+    white-space: nowrap;
+}
+
+.su-pay-chip.active {
+    border-color: #1e3a7a;
+    background: #eef2ff;
+    color: #1e3a7a;
+}
+
+.su-pay-chip:hover:not(.active) {
+    border-color: #9ca3af;
+}
+
+/* ── Payment method cards ── */
+.su-pm-card {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 13px 16px;
+    border: 1.5px solid #e5e7eb;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: border-color .15s;
+    margin-bottom: 8px;
+    user-select: none;
+}
+
+.su-pm-card:last-child {
+    margin-bottom: 0;
+}
+
+.su-pm-card.active {
+    border-color: #1e3a7a;
+}
+
+.su-pm-card input[type=radio] {
+    accent-color: #1e3a7a;
+    width: 17px;
+    height: 17px;
+    flex-shrink: 0;
+    cursor: pointer;
+}
+
+.su-pm-icon {
+    width: 28px;
+    height: 28px;
+    stroke: #1e3a7a;
+    fill: none;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    flex-shrink: 0;
+}
+
+.su-pm-label {
+    font-size: .9rem;
+    font-weight: 600;
+    color: #111827;
+}
+
+/* ── Amount display ── */
+.su-amount-box {
+    background: #f3f4f6;
+    border-radius: 12px;
+    padding: 16px 20px;
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+}
+
+.su-amount-cur {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #6b7280;
+}
+
+.su-amount-val {
+    font-size: 2rem;
+    font-weight: 800;
+    color: #111827;
+}
+
+/* ── Action buttons ── */
+.su-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: auto;
+}
+
+.su-btn-confirm {
+    width: 100%;
+    padding: 15px;
+    background: #1e3a7a;
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    font-size: .98rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background .15s;
+}
+
+.su-btn-confirm:hover:not(:disabled) {
+    background: #162d5e;
+}
+
+.su-btn-confirm:disabled {
+    opacity: .6;
+    cursor: default;
+}
+
+.su-btn-cancel {
+    width: 100%;
+    padding: 13px;
+    background: #fff;
+    color: #374151;
+    border: 1.5px solid #e5e7eb;
+    border-radius: 12px;
+    font-size: .92rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: border-color .15s;
+}
+
+.su-btn-cancel:hover {
+    border-color: #9ca3af;
+}
+
+.su-loading {
+    text-align: center;
+    padding: 40px 0;
+    color: #9ca3af;
+    font-size: .88rem;
+}
