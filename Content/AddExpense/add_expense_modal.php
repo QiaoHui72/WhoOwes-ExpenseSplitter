@@ -1,6 +1,6 @@
 <?php
 $ae_groups = mysqli_fetch_all(mysqli_query($connect,
-  "SELECT g.id, g.name FROM groups g
+  "SELECT g.id, g.name FROM `groups` g
    JOIN group_members gm ON gm.group_id = g.id
    WHERE gm.user_id = $current_user_id
    ORDER BY g.name"

@@ -26,7 +26,7 @@ mysqli_begin_transaction($connect);
 $ok = true;
 
 $ok = $ok && mysqli_query($connect,
-  "INSERT INTO groups (name, icon, updated_at) VALUES ('$name', '$icon', NOW())"
+  "INSERT INTO `groups` (name, icon, updated_at) VALUES ('$name', '$icon', NOW())"
 );
 $group_id = (int)mysqli_insert_id($connect);
 

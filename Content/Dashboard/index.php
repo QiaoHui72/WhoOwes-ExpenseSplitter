@@ -61,7 +61,7 @@ $groups_result = mysqli_query($connect,
        WHERE es3.user_id = $current_user_id AND e3.paid_by != $current_user_id
          AND es3.is_settled = 0 AND e3.group_id = g.id
      ), 0) AS i_owe
-   FROM groups g
+   FROM `groups` g
    JOIN group_members gm ON gm.group_id = g.id
    WHERE gm.user_id = $current_user_id
    ORDER BY g.updated_at DESC

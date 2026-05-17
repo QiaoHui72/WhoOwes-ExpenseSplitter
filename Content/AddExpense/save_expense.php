@@ -50,7 +50,7 @@ foreach ($splits as $s) {
 }
 
 if ($ok) {
-  mysqli_query($connect, "UPDATE groups SET updated_at = NOW() WHERE id = $group_id");
+  mysqli_query($connect, "UPDATE `groups` SET updated_at = NOW() WHERE id = $group_id");
   mysqli_commit($connect);
   echo json_encode(['success' => true, 'expense_id' => $expense_id]);
 } else {

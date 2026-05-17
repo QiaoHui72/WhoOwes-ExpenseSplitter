@@ -30,7 +30,7 @@ $grp = mysqli_fetch_assoc(mysqli_query($connect,
      (SELECT COUNT(*) FROM group_members WHERE group_id = g.id) AS member_count,
      (SELECT MIN(e.expense_date) FROM expenses e WHERE e.group_id = g.id) AS first_expense,
      (SELECT MAX(e.expense_date) FROM expenses e WHERE e.group_id = g.id) AS last_expense
-   FROM groups g WHERE g.id = $group_id LIMIT 1"
+   FROM `groups` g WHERE g.id = $group_id LIMIT 1"
 ));
 
 // Total group spend

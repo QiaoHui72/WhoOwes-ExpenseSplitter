@@ -64,7 +64,7 @@ $expenses = mysqli_fetch_all(mysqli_query($connect,
      es.amount AS my_amount
    FROM expenses e
    JOIN users u ON u.id = e.paid_by
-   JOIN groups g ON g.id = e.group_id
+   JOIN `groups` g ON g.id = e.group_id
    JOIN expense_splits es ON es.expense_id = e.id AND es.user_id = $current_user_id
    JOIN group_members gm ON gm.group_id = e.group_id AND gm.user_id = $current_user_id
    ORDER BY e.created_at DESC LIMIT 15"
@@ -76,7 +76,7 @@ $_sr = mysqli_query($connect,
      g.name AS group_name,
      uf.name AS from_name, ut.name AS to_name
    FROM settlements s
-   JOIN groups g ON g.id = s.group_id
+   JOIN `groups` g ON g.id = s.group_id
    JOIN users uf ON uf.id = s.paid_by
    JOIN users ut ON ut.id = s.paid_to
    WHERE s.paid_by = $current_user_id OR s.paid_to = $current_user_id

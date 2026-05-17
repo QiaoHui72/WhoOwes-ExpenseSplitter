@@ -39,7 +39,7 @@ $groups_result = mysqli_query($connect,
        WHERE e5.group_id = g.id AND es5.is_settled = 1), 0) AS settled_splits,
      COALESCE((SELECT MAX(e6.created_at) FROM expenses e6
        WHERE e6.group_id = g.id), g.updated_at) AS last_activity
-   FROM groups g
+   FROM `groups` g
    JOIN group_members gm ON gm.group_id = g.id
    WHERE gm.user_id = $current_user_id
    ORDER BY last_activity DESC"
