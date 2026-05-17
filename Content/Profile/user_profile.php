@@ -94,27 +94,43 @@ $friends_count = (int)$r['cnt'];
     <!-- Account Settings -->
     <div class="settings-card">
       <div class="settings-label">ACCOUNT</div>
-      <a class="settings-row" href="#">
+
+      <div class="settings-row" onclick="epOpen()">
         <div class="row-left">
           <div class="row-icon"><i data-lucide="user"></i></div>
           <span>Edit Profile</span>
         </div>
         <i data-lucide="chevron-right" class="chevron"></i>
-      </a>
-      <a class="settings-row" href="#">
+      </div>
+
+      <div class="settings-row pm-section-header">
         <div class="row-left">
           <div class="row-icon"><i data-lucide="credit-card"></i></div>
           <span>Payment Methods</span>
         </div>
-        <i data-lucide="chevron-right" class="chevron"></i>
-      </a>
-      <a class="settings-row" href="#">
-        <div class="row-left">
-          <div class="row-icon"><i data-lucide="bell"></i></div>
-          <span>Notifications</span>
+      </div>
+
+      <div class="pm-row">
+        <div class="pm-left">
+          <div class="pm-icon"><i data-lucide="landmark"></i></div>
+          <div><div class="pm-name">Bank Transfer</div><div class="pm-sub">Maybank</div></div>
         </div>
-        <i data-lucide="chevron-right" class="chevron"></i>
-      </a>
+        <label class="toggle"><input type="checkbox" checked><span class="toggle-slider"></span></label>
+      </div>
+      <div class="pm-row">
+        <div class="pm-left">
+          <div class="pm-icon"><i data-lucide="qr-code"></i></div>
+          <div><div class="pm-name">DuitNow QR</div><div class="pm-sub">Instant transfer</div></div>
+        </div>
+        <label class="toggle"><input type="checkbox" checked><span class="toggle-slider"></span></label>
+      </div>
+      <div class="pm-row">
+        <div class="pm-left">
+          <div class="pm-icon"><i data-lucide="credit-card"></i></div>
+          <div><div class="pm-name">Credit / Debit Card</div><div class="pm-sub">Visa, Mastercard</div></div>
+        </div>
+        <label class="toggle"><input type="checkbox"><span class="toggle-slider"></span></label>
+      </div>
     </div>
 
     <!-- Preferences -->
@@ -132,27 +148,108 @@ $friends_count = (int)$r['cnt'];
       </div>
       <div class="settings-row">
         <div class="row-left">
-          <div class="row-icon"><i data-lucide="moon"></i></div>
-          <span>Dark Mode</span>
+          <div class="row-icon"><i data-lucide="tag"></i></div>
+          <div>
+            <div class="row-title">Include SST by default</div>
+            <div class="row-sub" id="sstSubText">All tax off</div>
+          </div>
         </div>
         <label class="toggle">
-          <input type="checkbox">
+          <input type="checkbox" id="sstToggle" onchange="sstChange()">
           <span class="toggle-slider"></span>
         </label>
       </div>
-      <div class="settings-row">
-        <div class="row-left">
-          <div class="row-icon"><i data-lucide="tag"></i></div>
-          <span>Include SST by default</span>
-        </div>
-        <label class="toggle">
-          <input type="checkbox" checked>
-          <span class="toggle-slider"></span>
-        </label>
+      <div id="sstRates" class="sst-rates" style="display:none;">
+        <div class="sst-chip" data-rate="6">SST 6%</div>
+        <div class="sst-chip" data-rate="10">SST 10%</div>
+        <div class="sst-chip closed">SST 8%<span class="sst-closed-lbl">Closed</span></div>
       </div>
     </div>
 
   </main>
 </div>
+
+<!-- Edit Profile Modal -->
+<div id="epOverlay" class="ep-overlay">
+  <div class="ep-modal">
+    <div class="ep-header">
+      <span class="ep-title">Edit Profile</span>
+      <button class="ep-close" onclick="epClose()">&#215;</button>
+    </div>
+    <form id="epForm" onsubmit="epSubmit(event)">
+      <div class="ep-field">
+        <label class="ep-label">Full Name</label>
+        <input class="ep-input" name="name" type="text" value="<?= htmlspecialchars($user_name) ?>" required autocomplete="name">
+      </div>
+      <div class="ep-field">
+        <label class="ep-label">Email</label>
+        <input class="ep-input" name="email" type="email" value="<?= htmlspecialchars($user_email) ?>" autocomplete="email">
+      </div>
+      <div class="ep-field">
+        <label class="ep-label">Phone</label>
+        <input class="ep-input" name="phone" type="tel" value="<?= htmlspecialchars($user_phone) ?>" placeholder="+60 12-345 6789">
+      </div>
+      <div class="ep-actions">
+        <button type="submit" class="ep-btn-save" id="epSaveBtn">Save Changes</button>
+        <button type="button" class="ep-btn-cancel" onclick="epClose()">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+// ── Edit Profile ──────────────────────────────────────────────────
+function epOpen() { document.getElementById('epOverlay').style.display = 'flex'; }
+function epClose() { document.getElementById('epOverlay').style.display = 'none'; }
+document.getElementById('epOverlay').addEventListener('click', function (e) {
+  if (e.target === this) epClose();
+});
+function epSubmit(e) {
+  e.preventDefault();
+  var form = document.getElementById('epForm');
+  var btn  = document.getElementById('epSaveBtn');
+  btn.disabled    = true;
+  btn.textContent = 'Saving…';
+  fetch('save_profile.php', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      name:  form.querySelector('[name=name]').value.trim(),
+      email: form.querySelector('[name=email]').value.trim(),
+      phone: form.querySelector('[name=phone]').value.trim()
+    })
+  })
+  .then(function (r) { return r.json(); })
+  .then(function (res) {
+    if (res.success) { epClose(); location.reload(); }
+    else {
+      alert(res.error || 'Failed to save.');
+      btn.disabled = false; btn.textContent = 'Save Changes';
+    }
+  })
+  .catch(function () {
+    alert('An error occurred. Please try again.');
+    btn.disabled = false; btn.textContent = 'Save Changes';
+  });
+}
+
+// ── SST ───────────────────────────────────────────────────────────
+function sstChange() {
+  var on    = document.getElementById('sstToggle').checked;
+  var rates = document.getElementById('sstRates');
+  rates.style.display = on ? 'flex' : 'none';
+  document.getElementById('sstSubText').textContent = on ? 'Choose a rate below' : 'All tax off';
+  if (on) {
+    document.querySelectorAll('.sst-chip:not(.closed)').forEach(function (c) { c.classList.remove('selected'); });
+    document.querySelector('.sst-chip[data-rate="6"]').classList.add('selected');
+  }
+}
+document.querySelectorAll('.sst-chip:not(.closed)').forEach(function (chip) {
+  chip.addEventListener('click', function () {
+    document.querySelectorAll('.sst-chip:not(.closed)').forEach(function (c) { c.classList.remove('selected'); });
+    this.classList.add('selected');
+  });
+});
+</script>
 </body>
 </html>

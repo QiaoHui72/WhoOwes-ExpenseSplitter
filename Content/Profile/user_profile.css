@@ -265,3 +265,175 @@ body {
 
 .toggle input:checked + .toggle-slider { background: #1e3a7a; }
 .toggle input:checked + .toggle-slider::before { transform: translateX(20px); }
+
+/* ── Payment Method rows ── */
+.pm-section-header { cursor: default; }
+.pm-section-header:hover { background: transparent; }
+
+.pm-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 13px 24px 13px 52px;
+  border-bottom: 1px solid #f3f4f6;
+  background: #fafafa;
+}
+
+.settings-card > .pm-row:last-child {
+  border-bottom: none;
+  border-radius: 0 0 14px 14px;
+}
+
+.pm-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.pm-icon {
+  width: 32px; height: 32px;
+  border-radius: 8px;
+  background: #eef2ff;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+
+.pm-icon svg {
+  width: 15px; height: 15px;
+  stroke: #1e3a7a; fill: none;
+  stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
+}
+
+.pm-name { font-size: .88rem; font-weight: 600; color: #111827; }
+.pm-sub  { font-size: .75rem; color: #9ca3af; margin-top: 1px; }
+
+/* ── SST Rates ── */
+.sst-rates {
+  padding: 12px 24px 16px 52px;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  background: #fafafa;
+  border-top: 1px solid #f3f4f6;
+  border-radius: 0 0 14px 14px;
+}
+
+.sst-chip {
+  height: 32px;
+  padding: 0 16px;
+  border-radius: 20px;
+  border: 1.5px solid #e5e7eb;
+  background: #fff;
+  font-size: .82rem;
+  font-weight: 600;
+  color: #374151;
+  cursor: pointer;
+  transition: all .15s;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  user-select: none;
+}
+
+.sst-chip:hover:not(.closed) { border-color: #1e3a7a; color: #1e3a7a; }
+.sst-chip.selected { background: #1e3a7a; border-color: #1e3a7a; color: #fff; }
+
+.sst-chip.closed {
+  background: #f9fafb;
+  border-color: #e5e7eb;
+  color: #9ca3af;
+  cursor: default;
+  text-decoration: line-through;
+}
+
+.sst-closed-lbl {
+  font-size: .67rem;
+  font-weight: 700;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  background: #fee2e2;
+  color: #be123c;
+  padding: 2px 6px;
+  border-radius: 4px;
+  text-decoration: none;
+}
+
+/* ── Edit Profile Modal ── */
+.ep-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,.45);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 16px;
+}
+
+.ep-modal {
+  background: #fff;
+  border-radius: 20px;
+  width: min(440px, 100%);
+  box-shadow: 0 20px 60px rgba(0,0,0,.25);
+  overflow: hidden;
+}
+
+.ep-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 22px 24px 0;
+}
+
+.ep-title { font-size: 1.1rem; font-weight: 800; color: #111827; }
+
+.ep-close {
+  width: 32px; height: 32px;
+  border-radius: 50%; border: none;
+  background: #f3f4f6; color: #6b7280;
+  font-size: 1.1rem; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+}
+.ep-close:hover { background: #e5e7eb; color: #111827; }
+
+.ep-field { padding: 16px 24px 0; }
+
+.ep-label {
+  display: block;
+  font-size: .72rem; font-weight: 700;
+  color: #6b7280; letter-spacing: .06em;
+  text-transform: uppercase; margin-bottom: 6px;
+}
+
+.ep-input {
+  width: 100%; height: 44px;
+  padding: 0 14px;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 10px;
+  font-size: .9rem; color: #111827;
+  outline: none; transition: border-color .15s;
+}
+.ep-input:focus { border-color: #1e3a7a; }
+
+.ep-actions {
+  padding: 20px 24px 24px;
+  display: flex; flex-direction: column; gap: 10px;
+}
+
+.ep-btn-save {
+  width: 100%; padding: 13px;
+  background: #1e3a7a; color: #fff;
+  border: none; border-radius: 12px;
+  font-size: .95rem; font-weight: 700;
+  cursor: pointer; transition: background .15s;
+}
+.ep-btn-save:hover:not(:disabled) { background: #162d5e; }
+.ep-btn-save:disabled { opacity: .6; cursor: default; }
+
+.ep-btn-cancel {
+  width: 100%; padding: 12px;
+  background: #fff; color: #374151;
+  border: 1.5px solid #e5e7eb; border-radius: 12px;
+  font-size: .9rem; font-weight: 600;
+  cursor: pointer; transition: border-color .15s;
+}
+.ep-btn-cancel:hover { border-color: #9ca3af; }

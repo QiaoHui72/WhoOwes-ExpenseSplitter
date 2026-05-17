@@ -14,7 +14,17 @@ $u = mysqli_fetch_assoc(mysqli_query($connect,
 $user_name     = $u['name'];
 $user_initials = strtoupper(implode('', array_map(fn($p) => $p[0], explode(' ', trim($user_name)))));
 
-// Friends = co-members of any shared group, with per-friend balances
+// Ensure friendships table exists
+mysqli_query($connect,
+  "CREATE TABLE IF NOT EXISTS friendships (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL, friend_id INT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE KEY unique_pair (user_id, friend_id)
+  )"
+);
+
+// Friends = shared-group co-members OR directly added, with per-friend balances
 $friends = mysqli_fetch_all(mysqli_query($connect,
   "SELECT u.id, u.name,
      COUNT(DISTINCT gm_me.group_id) AS shared_groups,
@@ -29,9 +39,13 @@ $friends = mysqli_fetch_all(mysqli_query($connect,
        WHERE e2.paid_by = u.id AND es2.user_id = $current_user_id AND es2.is_settled = 0
      ), 0) AS i_owe_them
    FROM users u
-   JOIN group_members gm ON gm.user_id = u.id
-   JOIN group_members gm_me ON gm_me.group_id = gm.group_id AND gm_me.user_id = $current_user_id
+   LEFT JOIN group_members gm     ON gm.user_id = u.id
+   LEFT JOIN group_members gm_me  ON gm_me.group_id = gm.group_id AND gm_me.user_id = $current_user_id
    WHERE u.id != $current_user_id
+     AND (
+       gm_me.group_id IS NOT NULL
+       OR EXISTS (SELECT 1 FROM friendships WHERE user_id = $current_user_id AND friend_id = u.id)
+     )
    GROUP BY u.id, u.name
    ORDER BY u.name"
 ), MYSQLI_ASSOC);
@@ -161,7 +175,7 @@ function avatar_color($id) {
           <?php if ($settled): ?>
           <span class="settled-chip">Settled &#10003;</span>
           <?php else: ?>
-          <button class="settle-btn">Settle</button>
+          <button class="settle-btn" onclick="suOpen(<?= (int)$f['id'] ?>)">Settle</button>
           <?php endif; ?>
         </div>
       </div>
@@ -171,6 +185,8 @@ function avatar_color($id) {
 
   </main>
 </div>
+
+<?php include 'add_friend_modal.php'; ?>
 
 <script>
 document.getElementById('searchInput')?.addEventListener('input', function () {

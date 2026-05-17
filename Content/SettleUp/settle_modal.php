@@ -259,9 +259,9 @@
   var suSelected = 'all';
 
   // ── Open / Close ────────────────────────────────────────────────
-  function suOpen() {
+  function suOpen(preSelectUserId) {
     document.getElementById('suOverlay').style.display = 'flex';
-    suLoad();
+    suLoad(preSelectUserId || null);
   }
   window.suOpen = suOpen;
 
@@ -280,7 +280,7 @@
   });
 
   // ── Fetch data ──────────────────────────────────────────────────
-  function suLoad() {
+  function suLoad(preSelectUserId) {
     document.getElementById('suSummary').innerHTML = '<div class="su-loading">Loading…</div>';
     document.getElementById('suPayChips').innerHTML = '';
     suSelected = 'all';
@@ -290,7 +290,7 @@
       .then(function (data) {
         suData = data;
         suRenderSummary();
-        suRenderChips();
+        suRenderChips(preSelectUserId);
         suUpdateAmount();
       })
       .catch(function () {
@@ -323,7 +323,7 @@
   }
 
   // ── Right: render "who to pay" chips ────────────────────────────
-  function suRenderChips() {
+  function suRenderChips(preSelectUserId) {
     var section = document.getElementById('suPaySection');
 
     if (!suData.i_owe.length) {
@@ -332,11 +332,16 @@
     }
     section.style.display = '';
 
+    if (preSelectUserId) {
+      var hit = suData.i_owe.find(function (d) { return String(d.user_id) === String(preSelectUserId); });
+      if (hit) suSelected = String(preSelectUserId);
+    }
+
     var total = suData.i_owe.reduce(function (s, d) { return s + parseFloat(d.amount); }, 0);
-    var html  = '<div class="su-pay-chip active" data-id="all">All (RM ' + total.toFixed(2) + ')</div>';
+    var html  = '<div class="su-pay-chip ' + (suSelected === 'all' ? 'active' : '') + '" data-id="all">All (RM ' + total.toFixed(2) + ')</div>';
 
     suData.i_owe.forEach(function (d) {
-      html += '<div class="su-pay-chip" data-id="' + d.user_id + '">' +
+      html += '<div class="su-pay-chip ' + (String(d.user_id) === String(suSelected) ? 'active' : '') + '" data-id="' + d.user_id + '">' +
         esc(d.name) + ' (RM ' + parseFloat(d.amount).toFixed(2) + ')</div>';
     });
 
