@@ -6,6 +6,7 @@ $password = ""; //default password is empty
 $dbname = "whoowes"; //database name
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 $host     = getenv('DB_HOST') ?: 'db';
 $user     = getenv('DB_USER') ?: 'whoowes';
 $password = getenv('DB_PASS') ?: 'whoowes_pass';
@@ -24,5 +25,17 @@ $connect = mysqli_connect($servername, $username, $password, $dbname);
 if (!$connect) {
     die("Connection Failed: " . mysqli_connect_error());
 >>>>>>> parent of 8f362aa (Update database.php)
+=======
+$host = getenv("DB_HOST");
+$user = getenv("DB_USER");
+$password = getenv("DB_PASS");
+$database = getenv("DB_NAME");
+$port = getenv("DB_PORT");
+
+$connect = new mysqli($host, $user, $password, $database, $port);
+
+if ($connect->connect_error) {
+    die("Connection failed: " . $connect->connect_error);
+>>>>>>> parent of a96d4cc (database)
 }
 ?>
