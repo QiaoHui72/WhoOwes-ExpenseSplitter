@@ -1,12 +1,14 @@
 <?php
-//create a connection to the database
-$servername = "localhost"; //127.0.0.1 //computer name
-$username = "root"; //default username admin
-$password = ""; //default password is empty
-$dbname = "whoowes"; //database name
 
-$connect = mysqli_connect($servername, $username, $password, $dbname);
-if (!$connect) {
-    die("Connection Failed: " . mysqli_connect_error());
+$host = getenv("DB_HOST");
+$user = getenv("DB_USER");
+$password = getenv("DB_PASS");
+$database = getenv("DB_NAME");
+$port = getenv("DB_PORT");
+
+$conn = new mysqli($host, $user, $password, $database, $port);
+
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
 }
 ?>
