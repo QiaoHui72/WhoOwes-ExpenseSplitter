@@ -334,8 +334,9 @@
     if (e.target === this) agClose();
   });
 
-  // Triggers
-  document.querySelector('.btn-create')?.addEventListener('click', aeOpen);
+  // Triggers: dashboard .new-group card and group.php .new-card
+  document.querySelector('.new-group')?.addEventListener('click', agOpen);
+  document.querySelector('.new-card')?.addEventListener('click', agOpen);
 
   // ── Reset ───────────────────────────────────────────────────────
   function agReset() {

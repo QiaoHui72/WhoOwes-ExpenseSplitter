@@ -51,3 +51,4 @@
   </div>
 </aside>
 <?php include __DIR__ . '/../AddExpense/add_expense_modal.php'; ?>
+<?php include __DIR__ . '/../AddGroup/add_group_modal.php'; ?>
