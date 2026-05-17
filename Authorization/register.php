@@ -29,13 +29,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (mysqli_stmt_num_rows($chk) > 0) {
       $error = 'An account with that email already exists.';
     } else {
-      $hash = password_hash($password, PASSWORD_DEFAULT);
       $now  = date('Y-m-d H:i:s');
       $stmt = mysqli_prepare($connect,
         "INSERT INTO users (name, email, password, currency, created_at, updated_at)
          VALUES (?, ?, ?, 'MYR', ?, ?)"
       );
-      mysqli_stmt_bind_param($stmt, 'sssss', $name, $email, $hash, $now, $now);
+      mysqli_stmt_bind_param($stmt, 'sssss', $name, $email, $password, $now, $now);
 
       if (mysqli_stmt_execute($stmt)) {
         $success = 'Account created! You can now sign in.';

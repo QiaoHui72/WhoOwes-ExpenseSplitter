@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once '../database.php';
+include '../database.php';
 
 $error   = '';
 $success = '';
@@ -22,15 +22,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $user   = mysqli_fetch_assoc($result);
     mysqli_stmt_close($stmt);
 
-    if ($user && password_verify($password, $user['password'])) {
-      // Store user in session and go to dashboard
+    if ($user && $password === $user['password']) {
       $_SESSION['user_id']   = $user['id'];
       $_SESSION['user_name'] = $user['name'];
-      header('Location: ../Content/dashboard.php');
+      header('Location: ../Content/Dashboard/dashboard.php');
       exit;
-    } else {
-      $error = 'Incorrect email or password.';
     }
+    $error = 'Incorrect email or password.';
   }
 }
 ?>

@@ -1,0 +1,274 @@
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body { height: 100%; overflow: hidden; }
+
+body {
+  height: 100vh;
+  background: #1a1a2e;
+  display: flex;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+.app {
+  display: flex;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* ══ MAIN ══ */
+.main {
+  flex: 1;
+  height: 100vh;
+  background: #f4f6fb;
+  padding: 32px 36px 30px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* Page Header */
+.page-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.page-header h2 {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #111827;
+}
+
+.page-header p {
+  font-size: 0.88rem;
+  color: #6b7280;
+  margin-top: 4px;
+}
+
+.btn-create {
+  height: 42px;
+  padding: 0 20px;
+  background: #1e3a7a;
+  color: #fff;
+  border: none;
+  border-radius: 22px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+  transition: background 0.2s;
+}
+
+.btn-create:hover { background: #162d60; }
+
+.btn-create svg {
+  width: 16px;
+  height: 16px;
+  stroke: #fff;
+  fill: none;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+}
+
+/* Outstanding Balance Banner */
+.balance-banner {
+  background-color: #1e3a7a;
+  background-image: repeating-linear-gradient(
+    135deg,
+    rgba(255,255,255,0.04) 0px, rgba(255,255,255,0.04) 1px,
+    transparent 1px, transparent 14px
+  );
+  border-radius: 16px;
+  padding: 28px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.balance-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: #93c5fd;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.balance-amount {
+  font-size: 2.4rem;
+  font-weight: 800;
+  color: #fff;
+  line-height: 1;
+}
+
+.balance-sub {
+  font-size: 0.82rem;
+  color: #93c5fd;
+  margin-top: 6px;
+}
+
+.btn-settle-all {
+  height: 42px;
+  padding: 0 24px;
+  background: #fff;
+  color: #1e3a7a;
+  border: none;
+  border-radius: 22px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 0.2s;
+}
+
+.btn-settle-all:hover { background: #f0f4ff; }
+
+/* Groups Grid */
+.groups-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+/* Group Card */
+.group-card {
+  background: #fff;
+  border-radius: 14px;
+  padding: 18px 20px;
+  cursor: pointer;
+  transition: box-shadow 0.2s;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.group-card:hover { box-shadow: 0 4px 18px rgba(0,0,0,0.10); }
+
+.group-card-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+.group-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.group-icon svg {
+  width: 22px;
+  height: 22px;
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.group-meta {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.group-meta strong {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #111827;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.group-meta > span {
+  font-size: 0.78rem;
+  color: #9ca3af;
+}
+
+.balance-text {
+  font-size: 0.82rem;
+  margin-top: 2px;
+}
+
+.balance-text.green { color: #16a34a; }
+.balance-text.red   { color: #dc2626; }
+.balance-text.gray  { color: #6b7280; }
+
+.chevron {
+  font-size: 1.2rem;
+  color: #9ca3af;
+  flex-shrink: 0;
+  line-height: 1;
+  margin-top: 2px;
+}
+
+/* Progress */
+.progress-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.progress-track {
+  flex: 1;
+  height: 6px;
+  background: #e5e7eb;
+  border-radius: 99px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: #1e3a7a;
+  border-radius: 99px;
+  transition: width 0.4s ease;
+}
+
+.progress-fill.full { background: #16a34a; }
+
+.progress-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #6b7280;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* Create New Group Card */
+.new-card {
+  border: 2px dashed #d1d5db;
+  background: transparent;
+  align-items: center;
+  justify-content: center;
+  min-height: 110px;
+  gap: 10px;
+}
+
+.new-card:hover { border-color: #1e3a7a; }
+
+.new-card svg {
+  width: 30px;
+  height: 30px;
+  stroke: #1e3a7a;
+  fill: none;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.new-card span {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #374151;
+}
